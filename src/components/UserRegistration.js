@@ -5,7 +5,7 @@ const UserRegistration = () => {
     codigo: "",
     nome: "",
     email: "",
-    endereco: "",
+    senha: "",
   });
 
   const handleChange = (e) => {
@@ -22,7 +22,7 @@ const UserRegistration = () => {
     <div className="container">
       <h1>Cadastro de Usuário</h1>
       <form onSubmit={handleSubmit}>
-        {["Nome", "Email", "Endereço"].map((field) => (
+        {["Nome", "Email", "Senha"].map((field) => (
           <div key={field}>
             <label>{field}</label>
             <input
