@@ -1,0 +1,155 @@
+/* Estilo geral */
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  position: relative; /* Necessário para o z-index */
+  
+  /* Gradiente de fundo */
+  background: linear-gradient(to right, #6a11cb, #2575fc); /* Gradiente */
+}
+
+/* Imagem do avião (fica sobre o gradiente) */
+body::before {
+  content: ""; /* Cria um pseudo-elemento */
+  position: absolute; /* Fixa a imagem */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('./modais-removebg-preview.png');
+  background-size: contain; /* Ajusta o tamanho da imagem */
+  background-position: center; /* Centraliza a imagem */
+  background-repeat: no-repeat;
+  background-attachment: fixed; /* A imagem vai ficar fixa durante o scroll */
+  opacity: 0.9; /* Define a transparência */
+  z-index: 1; /* A imagem fica sobre o gradiente */
+}
+
+/* Cabeçalho */
+h1 {
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 20px;
+  z-index: 5; /* Coloca o título acima da imagem */
+  position: relative;
+}
+
+/* Container */
+.container {
+  position: relative; /* Necessário para o z-index */
+  background: #ffffff;
+  color: #333;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  width: 100%;
+  z-index: 4; /* Coloca os componentes de formulário acima do avião */
+}
+
+/* Campos de formulário */
+form label {
+  font-size: 0.9rem;
+  margin-bottom: 5px;
+  display: block;
+  font-weight: bold;
+}
+
+form input {
+  width: 95%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+  outline: none;
+}
+
+form input:focus {
+  border-color: #2575fc;
+  box-shadow: 0 0 5px rgba(37, 117, 252, 0.5);
+}
+
+/* Botões */
+form button {
+  background: #2575fc;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.3s;
+}
+
+form button:hover {
+  background: #6a11cb;
+}
+
+/* Links de navegação */
+nav {
+  position: absolute; /* Garante que a navegação fique no topo */
+  top: 20px; /* Distância do topo */
+  left: 51.3%;
+  transform: translateX(-50%);
+  z-index: 6; /* Garante que a navegação fique acima de todos */
+}
+
+nav a {
+  margin: 0 10px;
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+  border-bottom: 2px solid transparent;
+  position: relative;
+  transition: color 0.3s, transform 0.3s;
+}
+
+nav a:hover {
+  color: #ffffff; /* Cor de hover amarelo vibrante */
+  border-bottom: 2px solid #ffffff; /* Linha amarela */
+  padding-bottom: 4px;
+  transform: translateY(-2px);
+}
+
+nav a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #ffffff; /* Linha amarela */
+  transform: scaleX(0);
+  transform-origin: bottom right;
+  transition: transform 0.3s ease-out;
+}
+
+nav a:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .container {
+    padding: 15px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  form button {
+    font-size: 0.9rem;
+  }
+}
