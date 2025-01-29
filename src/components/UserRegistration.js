@@ -22,7 +22,7 @@ const UserRegistration = () => {
     <div className="container">
       <h1>Cadastro de Usuário</h1>
       <form onSubmit={handleSubmit}>
-        {["Nome", "Email", "Endereço"].map((field) => ( 
+        {["Nome", "Email", "Endereço"].map((field) => (
           <div key={field}>
             <label>{field}</label>
             <input

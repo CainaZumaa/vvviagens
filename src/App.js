@@ -9,14 +9,13 @@ const App = () => {
     <Router>
       <div className="p-4">
         <nav className="mb-4">
-          <Link to="/" className="mr-4 text-blue-500">Cadastro de Usuário</Link>
-          <Link to="/compra" className="text-green-500">Compra de Passagem</Link>
+          <Link to="/">Cadastro de Usuário</Link>
+          <Link to="/compra">Compra de Passagem</Link>
         </nav>
         <Routes>
           <Route path="/" element={<UserRegistration />} />
           <Route path="/compra" element={<TicketPurchase />} />
         </Routes>
-        
       </div>
     </Router>
   );
