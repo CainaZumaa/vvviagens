@@ -1,152 +1,146 @@
 import React, { useState } from "react";
 
 const TicketPurchase = () => {
-  const [showForm, setShowForm] = useState(false);
-  const [selectedTrip, setSelectedTrip] = useState(null);
-
-  const exampleTrips = [
+  const viagensExemplo = [
     {
-      id: 1,
-      Localizador: "123ABC",
-      Assento: "10A",
-      Nome: "",
-      Modal: "Ônibus",
-      Data: "2025-02-10",
-      HoraDePartida: "08:00",
-      HoraDeChegada: "12:00",
-      CidadeDeOrigem: "São Paulo",
-      CidadeDeDestino: "Rio de Janeiro",
-      Desconto: "",
-      MetodoPagamento: "",
-      parcelas: 1,
+      localizador: "ABC123",
+      tipodemodal: "Ônibus",
+      data: "2025-02-05",
+      horadepartida: "08:00",
+      horadechegada: "12:00",
+      tempodeviagem: "04:00:00",
+      cidadedeorigem: "São Paulo",
+      cidadededestino: "Rio de Janeiro",
     },
     {
-      id: 2,
-      Localizador: "456DEF",
-      Assento: "20B",
-      Nome: "",
-      Modal: "Ônibus",
-      Data: "2025-02-15",
-      HoraDePartida: "14:00",
-      HoraDeChegada: "18:30",
-      CidadeDeOrigem: "Belo Horizonte",
-      CidadeDeDestino: "Vitória",
-      Desconto: "",
-      MetodoPagamento: "",
-      parcelas: 1,
+      localizador: "XYZ789",
+      tipodemodal: "Avião",
+      data: "2025-02-06",
+      horadepartida: "14:00",
+      horadechegada: "16:00",
+      tempodeviagem: "02:00:00",
+      cidadedeorigem: "Belo Horizonte",
+      cidadededestino: "Salvador",
     },
   ];
 
-  const fieldLabels = {
-    Localizador: "Localizador",
-    Assento: "Assento",
-    Nome: "Nome",
-    Modal: "Modal",
-    Data: "Data",
-    HoraDePartida: "Hora de Partida",
-    HoraDeChegada: "Hora de Chegada",
-    CidadeDeOrigem: "Cidade de Origem",
-    CidadeDeDestino: "Cidade de Destino",
-    Desconto: "Desconto",
-    MetodoPagamento: "Método de Pagamento",
-    parcelas: "Parcelas",
-  };
+  const [formData, setFormData] = useState({
+    localizador: "",
+    assento: "",
+    codigodocliente: "",
+    nomedopassageiro: "",
+    tipodemodal: "",
+    data: "",
+    horadepartida: "",
+    horadechegada: "",
+    tempodeviagem: "",
+    cidadedeorigem: "",
+    cidadededestino: "",
+  });
 
-  const handleTripSelection = (trip) => {
-    setSelectedTrip(trip);
-    setShowForm(true);
+  const [message, setMessage] = useState("");
+
+  const handleSelect = (viagem) => {
+    setFormData({
+      ...viagem,
+      assento: "",
+      codigodocliente: "",
+      nomedopassageiro: "",
+    });
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setSelectedTrip((prev) => ({ ...prev, [name]: value }));
+    setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Dados da passagem enviados:", selectedTrip);
-  };
 
-  const handlePaymentMethodChange = (e) => {
-    const { value } = e.target;
-    setSelectedTrip((prev) => ({
-      ...prev,
-      MetodoPagamento: value,
-      parcelas: 1,
-    }));
+    try {
+      const response = await fetch("http://localhost:8080/tickets", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        setMessage("Passagem comprada com sucesso!");
+        setFormData({
+          localizador: "",
+          assento: "",
+          codigodocliente: "",
+          nomedopassageiro: "",
+          tipodemodal: "",
+          data: "",
+          horadepartida: "",
+          horadechegada: "",
+          tempodeviagem: "",
+          cidadedeorigem: "",
+          cidadededestino: "",
+        });
+      } else {
+        setMessage("Erro ao comprar a passagem.");
+      }
+    } catch (error) {
+      setMessage("Erro ao conectar ao servidor.");
+      console.error("Erro:", error);
+    }
   };
 
   return (
-    <div className="compra-de-passagem">
-      <div className="container">
-        {!showForm ? (
-          <>
-            <h1>Selecione sua viagem</h1>
-            <div className="viagens">
-              {exampleTrips.map((trip) => (
-                <div
-                  key={trip.id}
-                  className="viagem-card"
-                  onClick={() => handleTripSelection(trip)}
-                >
-                  <h2>
-                    {trip.CidadeDeOrigem} ➝ {trip.CidadeDeDestino}
-                  </h2>
-                  <p>
-                    Data: {trip.Data} | Hora de Partida: {trip.HoraDePartida}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </>
-        ) : (
-          <>
-            <h1>Compra de Passagem</h1>
-            <form onSubmit={handleSubmit}>
-              {Object.keys(selectedTrip).map((field) => (
-                <div key={field}>
-                  <label>{fieldLabels[field]}</label>
-                  {field === "MetodoPagamento" ? (
-                    <select
-                      name={field}
-                      value={selectedTrip[field]}
-                      onChange={handlePaymentMethodChange}
-                    >
-                      <option value="">Selecione</option>
-                      <option value="boleto">Boleto</option>
-                      <option value="credito">Cartão de Crédito</option>
-                      <option value="debito">Cartão de Débito</option>
-                    </select>
-                  ) : field === "parcelas" ? (
-                    selectedTrip.MetodoPagamento === "credito" ? (
-                      <select
-                        name={field}
-                        value={selectedTrip[field]}
-                        onChange={handleChange}
-                      >
-                        <option value={1}>1x sem juros</option>
-                        <option value={2}>2x sem juros</option>
-                        <option value={3}>3x sem juros</option>
-                        <option value={4}>4x sem juros</option>
-                      </select>
-                    ) : (
-                      <input type="number" name={field} value={1} readOnly />
-                    )
-                  ) : (
-                    <input
-                      type="text"
-                      name={field}
-                      value={selectedTrip[field]}
-                      onChange={handleChange}
-                    />
-                  )}
-                </div>
-              ))}
-              <button type="submit">Comprar</button>
-            </form>
-          </>
-        )}
-      </div>
+    <div className="container">
+      <h1>Compra de Passagem</h1>
+      {message && <p>{message}</p>}
+
+      <h2>Escolha uma viagem:</h2>
+      {viagensExemplo.map((viagem, index) => (
+        <button key={index} onClick={() => handleSelect(viagem)}>
+          {viagem.cidadedeorigem} → {viagem.cidadededestino} (
+          {viagem.tipodemodal})
+        </button>
+      ))}
+
+      {formData.localizador && (
+        <form onSubmit={handleSubmit}>
+          <h2>Preencha os dados</h2>
+
+          <div>
+            <label>Nome do Passageiro</label>
+            <input
+              type="text"
+              name="nomedopassageiro"
+              value={formData.nomedopassageiro}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div>
+            <label>Código do Cliente</label>
+            <input
+              type="number"
+              name="codigodocliente"
+              value={formData.codigodocliente}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div>
+            <label>Assento</label>
+            <input
+              type="text"
+              name="assento"
+              value={formData.assento}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <button type="submit">Comprar Passagem</button>
+        </form>
+      )}
     </div>
   );
 };
