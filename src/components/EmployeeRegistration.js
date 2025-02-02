@@ -5,22 +5,53 @@ const EmployeeRegistration = () => {
     nome: "",
     cargo: "",
     email: "",
-    senha: "",
   });
+
+  const [message, setMessage] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEmployeeData({ ...employeeData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Dados do funcionário/gerente enviados:", employeeData);
+
+    if (!employeeData.cargo) {
+      setMessage("Selecione um cargo antes de cadastrar.");
+      return;
+    }
+
+    const endpoint =
+      employeeData.cargo === "funcionario"
+        ? "http://localhost:8080/funcionarios"
+        : "http://localhost:8080/gerentes";
+
+    try {
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(employeeData),
+      });
+
+      if (response.ok) {
+        setMessage("Cadastro realizado com sucesso!");
+        setEmployeeData({ nome: "", cargo: "", email: "" });
+      } else {
+        setMessage("Erro ao cadastrar.");
+      }
+    } catch (error) {
+      setMessage("Erro ao conectar ao servidor.");
+      console.error("Erro:", error);
+    }
   };
 
   return (
     <div className="container">
       <h1>Cadastro de Funcionário/Gerente</h1>
+      {message && <p>{message}</p>}
       <form onSubmit={handleSubmit}>
         <div>
           <label>Nome</label>
@@ -29,6 +60,7 @@ const EmployeeRegistration = () => {
             name="nome"
             value={employeeData.nome}
             onChange={handleChange}
+            required
           />
         </div>
         <div>
@@ -37,6 +69,7 @@ const EmployeeRegistration = () => {
             name="cargo"
             value={employeeData.cargo}
             onChange={handleChange}
+            required
           >
             <option value="">Selecione</option>
             <option value="funcionario">Funcionário</option>
@@ -50,15 +83,7 @@ const EmployeeRegistration = () => {
             name="email"
             value={employeeData.email}
             onChange={handleChange}
-          />
-        </div>
-        <div>
-          <label>Senha</label>
-          <input
-            type="password"
-            name="senha"
-            value={employeeData.senha}
-            onChange={handleChange}
+            required
           />
         </div>
         <button type="submit">Cadastrar</button>
