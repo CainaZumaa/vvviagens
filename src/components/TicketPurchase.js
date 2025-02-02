@@ -8,7 +8,7 @@ const TicketPurchase = () => {
       data: "2025-02-05",
       horadepartida: "08:00",
       horadechegada: "12:00",
-      tempodeviagem: "04:00:00",
+      tempodeviagem: "04:00:00", // duração
       cidadedeorigem: "São Paulo",
       cidadededestino: "Rio de Janeiro",
     },
@@ -18,7 +18,7 @@ const TicketPurchase = () => {
       data: "2025-02-06",
       horadepartida: "14:00",
       horadechegada: "16:00",
-      tempodeviagem: "02:00:00",
+      tempodeviagem: "02:00:00", // duração
       cidadedeorigem: "Belo Horizonte",
       cidadededestino: "Salvador",
     },
@@ -102,44 +102,71 @@ const TicketPurchase = () => {
       ))}
 
       {formData.localizador && (
-        <form onSubmit={handleSubmit}>
+        <div>
+          <h2>Detalhes da Viagem:</h2>
+          <p>
+            <strong>Localizador:</strong> {formData.localizador}
+          </p>
+          <p>
+            <strong>Origem:</strong> {formData.cidadedeorigem}
+          </p>
+          <p>
+            <strong>Destino:</strong> {formData.cidadededestino}
+          </p>
+          <p>
+            <strong>Data da Viagem:</strong> {formData.data}
+          </p>
+          <p>
+            <strong>Horário de Partida:</strong> {formData.horadepartida}
+          </p>
+          <p>
+            <strong>Horário de Chegada:</strong> {formData.horadechegada}
+          </p>
+          <p>
+            <strong>Modal:</strong> {formData.tipodemodal}
+          </p>
+          <p>
+            <strong>Duração da Viagem:</strong> {formData.tempodeviagem}
+          </p>
+
           <h2>Preencha os dados</h2>
+          <form onSubmit={handleSubmit}>
+            <div>
+              <label>Nome do Passageiro</label>
+              <input
+                type="text"
+                name="nomedopassageiro"
+                value={formData.nomedopassageiro}
+                onChange={handleChange}
+                required
+              />
+            </div>
 
-          <div>
-            <label>Nome do Passageiro</label>
-            <input
-              type="text"
-              name="nomedopassageiro"
-              value={formData.nomedopassageiro}
-              onChange={handleChange}
-              required
-            />
-          </div>
+            <div>
+              <label>Código do Cliente</label>
+              <input
+                type="number"
+                name="codigodocliente"
+                value={formData.codigodocliente}
+                onChange={handleChange}
+                required
+              />
+            </div>
 
-          <div>
-            <label>Código do Cliente</label>
-            <input
-              type="number"
-              name="codigodocliente"
-              value={formData.codigodocliente}
-              onChange={handleChange}
-              required
-            />
-          </div>
+            <div>
+              <label>Assento</label>
+              <input
+                type="text"
+                name="assento"
+                value={formData.assento}
+                onChange={handleChange}
+                required
+              />
+            </div>
 
-          <div>
-            <label>Assento</label>
-            <input
-              type="text"
-              name="assento"
-              value={formData.assento}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <button type="submit">Comprar Passagem</button>
-        </form>
+            <button type="submit">Comprar Passagem</button>
+          </form>
+        </div>
       )}
     </div>
   );
