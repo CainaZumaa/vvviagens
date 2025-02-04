@@ -228,3 +228,8 @@ button {
 button:hover {
   background: #0056b3;
 }
+
+.containerCadastro {
+  margin-top: 50px;
+  margin-bottom: 50px;
+}

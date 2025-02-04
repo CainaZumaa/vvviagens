@@ -5,8 +5,8 @@ const UserRegistration = () => {
     nome: "",
     email: "",
     endereco: "",
-    senha: "", // Novo campo para senha
-    confirmarSenha: "", // Novo campo para confirmação de senha
+    senha: "",
+    confirmarSenha: "",
   });
 
   const [message, setMessage] = useState("");
@@ -19,13 +19,11 @@ const UserRegistration = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validação de senha (opcional, mas recomendado)
     if (formData.senha !== formData.confirmarSenha) {
       setMessage("As senhas não correspondem.");
-      return; // Impede o envio do formulário
+      return;
     }
 
-    // Remover a senha antes de enviar para o backend
     const formDataSemSenha = { ...formData };
     delete formDataSemSenha.senha;
     delete formDataSemSenha.confirmarSenha;
@@ -36,7 +34,7 @@ const UserRegistration = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formDataSemSenha), // Envia dados sem a senha
+        body: JSON.stringify(formDataSemSenha),
       });
 
       if (response.ok) {
@@ -58,66 +56,76 @@ const UserRegistration = () => {
   };
 
   return (
-    <div className="container">
-      <h1>Cadastro de Usuário</h1>
-      {message && <p>{message}</p>}
-      <form onSubmit={handleSubmit}>
-        {/* Campos existentes */}
-        <div>
-          <label>Nome</label>
-          <input
-            type="text"
-            name="nome"
-            value={formData.nome}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Email</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Endereço</label>
-          <input
-            type="text"
-            name="endereco"
-            value={formData.endereco}
-            onChange={handleChange}
-            required
-          />
-        </div>
+    <div className="containerCadastro">
+      <div className="container">
+        <h1>Cadastro de Usuário</h1>
+        {message && <p>{message}</p>}
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label>Nome</label>
+            <input
+              type="text"
+              name="nome"
+              value={formData.nome}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div>
+            <label>Email</label>
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div>
+            <label>Endereço</label>
+            <input
+              type="text"
+              name="endereco"
+              value={formData.endereco}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div>
+            <label>Senha</label>
+            <input
+              type="password"
+              name="senha"
+              value={formData.senha}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div>
+            <label>Confirmar Senha</label>
+            <input
+              type="password"
+              name="confirmarSenha"
+              value={formData.confirmarSenha}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <button type="submit">Cadastrar</button>
+        </form>
 
-        {/* Novos campos para senha */}
-        <div>
-          <label>Senha</label>
-          <input
-            type="password"
-            name="senha"
-            value={formData.senha}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Confirmar Senha</label>
-          <input
-            type="password"
-            name="confirmarSenha"
-            value={formData.confirmarSenha}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <button type="submit">Cadastrar</button>
-      </form>
+        {/* Adicionando o link para fazer login */}
+        <p>
+          {message === "Usuário cadastrado com sucesso!"
+            ? "Agora você pode "
+            : "Já tem conta? "}
+          <a href="/">
+            {message === "Usuário cadastrado com sucesso!"
+              ? "Fazer Login"
+              : "Fazer Login"}
+          </a>
+        </p>
+      </div>
     </div>
   );
 };

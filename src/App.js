@@ -17,11 +17,10 @@ const App = () => {
 
   return (
     <Router>
-      <div className="p-4">
+      <div>
         {usuario ? ( // Se estiver logado, mostra as rotas do sistema
           <>
-            <nav className="mb-4">
-              <Link to="/">Cadastro de Usuário</Link>
+            <nav>
               <Link to="/compra">Compra de Passagem</Link>
               <Link to="/modal">Cadastro de Modal</Link>
               <Link to="/ponto-vendas">Cadastro de Ponto de Vendas</Link>
@@ -31,7 +30,6 @@ const App = () => {
               </button>
             </nav>
             <Routes>
-              <Route path="/" element={<UserRegistration />} />
               <Route path="/compra" element={<TicketPurchase />} />
               <Route path="/modal" element={<ModalRegistration />} />
               <Route
@@ -42,7 +40,11 @@ const App = () => {
             </Routes>
           </>
         ) : (
-          <Login onLogin={setUsuario} /> // Se não estiver logado, exibe a tela de login
+          <Routes>
+            <Route path="/" element={<Login onLogin={setUsuario} />} />
+            <Route path="/cadastro" element={<UserRegistration />} />{" "}
+            {/* A rota do cadastro */}
+          </Routes>
         )}
       </div>
     </Router>

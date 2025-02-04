@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Login = ({ onLogin }) => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const navigate = useNavigate(); // Hook para navegação
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -16,6 +18,7 @@ const Login = ({ onLogin }) => {
       // Checando se a resposta contém o campo "nome", o que indica que o usuário foi encontrado
       if (data.nome) {
         onLogin(data); // Chama a função onLogin com o usuário encontrado
+        navigate("/"); // Redireciona para a página de compra
       } else {
         setMessage("Usuário não encontrado.");
       }
@@ -40,6 +43,9 @@ const Login = ({ onLogin }) => {
           />
         </div>
         <button type="submit">Entrar</button>
+        <p>
+          Não tem conta? <a href="/cadastro">Cadastre-se</a>
+        </p>
       </form>
     </div>
   );
