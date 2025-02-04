@@ -36,6 +36,8 @@ const TicketPurchase = () => {
     tempodeviagem: "",
     cidadedeorigem: "",
     cidadededestino: "",
+    metodoPagamento: "", // Novo campo: método de pagamento
+    parcelas: 1, // Novo campo: número de parcelas (apenas para cartão de crédito)
   });
 
   const [message, setMessage] = useState("");
@@ -46,6 +48,8 @@ const TicketPurchase = () => {
       assento: "",
       codigodocliente: "",
       nomedopassageiro: "",
+      metodoPagamento: "", // Resetar método de pagamento ao selecionar nova viagem
+      parcelas: 1, // Resetar número de parcelas
     });
   };
 
@@ -78,6 +82,8 @@ const TicketPurchase = () => {
           tempodeviagem: "",
           cidadedeorigem: "",
           cidadededestino: "",
+          metodoPagamento: "", // Resetar método de pagamento
+          parcelas: 1, // Resetar número de parcelas
         });
       } else {
         setMessage("Erro ao comprar a passagem.");
@@ -163,6 +169,38 @@ const TicketPurchase = () => {
                 required
               />
             </div>
+
+            <div>
+              <label>Método de Pagamento</label>
+              <select
+                name="metodoPagamento"
+                value={formData.metodoPagamento}
+                onChange={handleChange}
+                required
+              >
+                <option value="">Selecione...</option>
+                <option value="credito">Cartão de Crédito</option>
+                <option value="debito">Cartão de Débito</option>
+                <option value="pix">PIX</option>
+              </select>
+            </div>
+
+            {formData.metodoPagamento === "credito" && (
+              <div>
+                <label>Número de Parcelas</label>
+                <select
+                  name="parcelas"
+                  value={formData.parcelas}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="1">1x sem juros</option>
+                  <option value="2">2x sem juros</option>
+                  <option value="3">3x sem juros</option>
+                  <option value="4">4x sem juros</option>
+                </select>
+              </div>
+            )}
 
             <button type="submit">Comprar Passagem</button>
           </form>
